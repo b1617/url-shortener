@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend",
+    "shared-types"
+  ],
+  "scripts": {
+    "dev": "yarn workspaces run dev",
+    "build": "yarn workspaces run build"
+  }
+}

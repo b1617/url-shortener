@@ -1,0 +1,22 @@
+{
+  "name": "shared-types",
+  "version": "1.0.0",
+  "description": "Shared types for backend and frontend",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "keywords": [],
+  "author": "Dhinesh Sattia",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "zod": "^4.3.5"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.9",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres 
+      POSTGRES_DB: urlshortener
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  shared-types:
+    container_name: shared-types
+    build:
+      context: ./shared-types
+      dockerfile: Dockerfile
+    volumes:
+      - ./shared-types/src:/app/shared-types/src
+      - ./shared-types/dist:/app/shared-types/dist
+      - ./shared-types/package.json:/app/shared-types/package.json
+    networks:
+      - app-network
+
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend/src:/app/backend/src
+       - ./backend/prisma:/app/backend/prisma
+      - ./shared-types/dist:/app/backend/node_modules/shared-types/dist
+      - ./shared-types/package.json:/app/backend/node_modules/shared-types/package.json
+    env_file:
+      - ./backend/.env.development
+    depends_on:
+      - postgres
+      - shared-types
+    networks:
+      - app-network
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/src:/app/frontend/src
+      - ./shared-types/dist:/app/frontend/node_modules/shared-types/dist
+      - ./shared-types/package.json:/app/frontend/node_modules/shared-types/package.json
+    env_file:
+      - ./frontend/.env.development
+    depends_on:
+      - shared-types
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
