@@ -43,3 +43,7 @@ coverage/
 .turbo/
 dist-ssr/
 *.local
+
+
+# postgres data
+postgres-data/
