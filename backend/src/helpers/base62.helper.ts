@@ -23,7 +23,7 @@ export class Base62Helper {
     return count ^ this.SECRET;
   }
 
-  /** Generate a unique base62 ID of length 7 using a database counter sequence */
+  /** Generate a unique base62 ID using a database counter sequence */
   public async generateBase62Id(): Promise<string> {
     const counter = await prisma.$queryRaw<{ count: string }[]>`
     SELECT nextval('base62_counter') AS count 
