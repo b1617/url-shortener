@@ -13,13 +13,14 @@ Docker and Docker Compose are required to run the project.
 
 1. Clone the repository and navigate to the project directory:
    ```bash
-   cd urlShortener
+   git clone git@github.com:b1617/url-shortener.git
+   cd url-shortener
    ```
 2. Build and start the containers:
    ```bash
    docker compose up --build
    ```
-3. Setup the database:
+3. Open a new terminal and set up the database:
 
    ```bash
    docker compose exec backend npx prisma migrate dev
