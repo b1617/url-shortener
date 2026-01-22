@@ -117,6 +117,7 @@ we prefer using 301 redirect than 302 redirect as the browser will cache this re
 - Implement rate limiting to prevent abuse
 - No found page : redirect to a custom no found page instead of homepage
 - Add redis caching layer to improve read performance
+- Add backend tests 
 
 ## Technologies Used
 
@@ -128,6 +129,5 @@ we prefer using 301 redirect than 302 redirect as the browser will cache this re
 - **State Management**: Redux Toolkit Query
 - **Validation and Typing**: Zod
 - **DX**: Docker and Docker Compose
-- **Testing**: Jest and Supertest
 
 - **AI Assistance**: Copilot and chatGPT
