@@ -24,6 +24,10 @@ Docker and Docker Compose are required to run the project.
    ```bash
    docker compose exec backend npx prisma migrate dev
    ```
+4. Restart your container
+     ```bash
+   docker compose restart
+   ```
 
 Finally access the frontend application at `http://localhost:5173`
 
