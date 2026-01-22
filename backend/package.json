@@ -5,7 +5,6 @@
     "@prisma/client": "^6.8.2",
     "dotenv": "^17.2.3",
     "fastify": "^5.7.1",
-    "nodemon": "^3.1.11",
     "shared-types": "*",
     "zod": "^4.3.5"
   },
@@ -22,7 +21,7 @@
     "typescript": "^5.9.3"
   },
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules --watch src src/app.ts",
+    "dev": "ts-node-dev --respawn --transpile-only --poll --ignore-watch node_modules --watch src src/app.ts",
     "build": "tsc -p .",
     "db:migrate": "prisma migrate dev"
   },

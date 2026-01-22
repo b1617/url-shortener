@@ -3,8 +3,8 @@ import { z } from "zod";
 export const LinkSchema = z.object({
   id: z.number(),
   uid: z.string(),
-  originalUrl: z.string(),
-  slug: z.string(),
+  originalUrl: z.url(),
+  shortUrl: z.url(),
   createdAt: z.date(),
 });
 

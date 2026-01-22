@@ -9,6 +9,7 @@ import {
   validatorCompiler,
   ZodTypeProvider,
 } from "fastify-type-provider-zod";
+import { linkController } from "./modules/link/link.controller";
 import linkRoutes from "./modules/link/link.route";
 
 const server = async () => {
@@ -25,10 +26,8 @@ const server = async () => {
   });
   app.register(helmet);
 
-  // Health check endpoint
-  app.get("/ping", async (request, reply) => {
-    return { message: "pxong", timestamp: new Date().toISOString() };
-  });
+  // Redirect short URLs to original URLs
+  app.get("/:shortId", linkController.redirectToOriginalUrl);
 
   // Routes
   app.register(linkRoutes, { prefix: "/api/links" });

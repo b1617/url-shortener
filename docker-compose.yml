@@ -36,7 +36,7 @@ services:
       - "8080:8080"
     volumes:
       - ./backend/src:/app/backend/src
-       - ./backend/prisma:/app/backend/prisma
+      - ./backend/prisma:/app/backend/prisma
       - ./shared-types/dist:/app/backend/node_modules/shared-types/dist
       - ./shared-types/package.json:/app/backend/node_modules/shared-types/package.json
     env_file:

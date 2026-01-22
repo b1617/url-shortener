@@ -8,8 +8,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Edit3, Plus, X } from "lucide-react";
+import { Copy, Edit3, Plus, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 import { useCreateShortLinkMutation } from "../../redux/apis/LinkApi";
 import { Field, FieldError, FieldLabel } from "../ui/field";
@@ -29,6 +31,14 @@ const LinkFormSchema = z.object({
 type LinkFormData = z.infer<typeof LinkFormSchema>;
 
 export function LinkCreationModal({ isOpen, onClose }: LinkCreationModalProps) {
+  const [shortenUrl, setShortenUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    return () => {
+      setShortenUrl(null);
+    };
+  }, [isOpen]);
+
   const form = useForm<LinkFormData>({
     resolver: zodResolver(LinkFormSchema),
     defaultValues: {
@@ -46,9 +56,10 @@ export function LinkCreationModal({ isOpen, onClose }: LinkCreationModalProps) {
 
   async function onSubmit(data: LinkFormData) {
     try {
-      await createShortLink(data).unwrap();
-      onClose();
+      const response = await createShortLink(data).unwrap();
+      setShortenUrl(response.shortUrl);
     } catch (error) {
+      toast.error("Failed to create short link");
       console.error("Failed to create short link:", error);
     }
   }
@@ -60,7 +71,12 @@ export function LinkCreationModal({ isOpen, onClose }: LinkCreationModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        className="w-4xl max-h-[90vh] overflow-y-auto [&>button]:hidden"
+        onInteractOutside={(e) => {
+          e.preventDefault();
+        }}
+      >
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Edit3 className="w-5 h-5" />
@@ -95,6 +111,20 @@ export function LinkCreationModal({ isOpen, onClose }: LinkCreationModalProps) {
           </div>
         </form>
 
+        {shortenUrl && (
+          <div className="mt-4 p-4 border border-green-300 bg-green-50 rounded">
+            Shortened URL created successfully!
+            <p className="font-medium text-green-800 mb-2">{shortenUrl}</p>
+            <Button
+              className="hover:cursor-pointer"
+              onClick={() => navigator.clipboard.writeText(shortenUrl)}
+            >
+              <Copy className="w-4 h-4" />
+              Copy
+            </Button>
+          </div>
+        )}
+
         <DialogFooter className="flex gap-2">
           <Button
             variant="outline"
@@ -103,7 +133,7 @@ export function LinkCreationModal({ isOpen, onClose }: LinkCreationModalProps) {
             disabled={isSubmitting}
           >
             <X className="w-4 h-4" />
-            Cancel
+            Close
           </Button>
           <Button
             type="submit"

@@ -1,20 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { LinkCreationModal } from "./components/link/link-creation-modal";
+import LinkTableView from "./components/link/link-table-view";
 import { TopBar } from "./components/ui/layout/topbar";
-import { useFetchAllLinksQuery } from "./redux/apis/LinkApi";
 
 function App() {
-  const { data: links, isLoading, isError } = useFetchAllLinksQuery();
   const [isCreationModalOpen, setIsCreationModalOpen] = useState(false);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    return <div>Error loading links.</div>;
-  }
 
   return (
     <div className="flex min-h-svh flex-col ">
@@ -30,7 +21,9 @@ function App() {
               + Shorten link
             </Button>
           </div>
-          <div className="mt-4"> {JSON.stringify(links)} </div>
+          <div className="mt-4">
+            <LinkTableView />
+          </div>
         </div>
       </div>
       <LinkCreationModal
